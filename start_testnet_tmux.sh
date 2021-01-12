@@ -2,8 +2,8 @@
 
 cd ~
 
-TESTNET_PATH=~/latestnet
-NODE_COUNT=9
+TESTNET_PATH=/tmp/latestnet
+NODE_COUNT=$(ls $TESTNET_PATH | grep node | wc -l)
 WINDOWS_COUNT=$(( $(( $NODE_COUNT + 3 )) / 4 ))
 # tmux session name
 SN=PRIVLA
@@ -35,7 +35,8 @@ do
     for (( j=0; j < 4; ++j))
     do
         tmux select-pane -t $j
-        tmux send "cd node_$current_node && COMPlus_PerfMapEnabled=1 ./Lachain.Console" ENTER
+        num=$(printf "%02d" $current_node)
+        tmux send "cd node_$num && LOG_LEVEL=Info COMPlus_PerfMapEnabled=1 ./Lachain.Console" ENTER
         ((current_node++))
         if [ $current_node -gt $NODE_COUNT ]
         then
