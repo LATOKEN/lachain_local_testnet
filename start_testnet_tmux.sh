@@ -2,7 +2,7 @@
 
 cd ~
 
-TESTNET_PATH=/tmp/latestnet
+TESTNET_PATH=/hdd/latestnet
 NODE_COUNT=$(ls $TESTNET_PATH | grep node | wc -l)
 WINDOWS_COUNT=$(( $(( $NODE_COUNT + 3 )) / 4 ))
 # tmux session name
@@ -36,7 +36,7 @@ do
     do
         tmux select-pane -t $j
         num=$(printf "%02d" $current_node)
-        tmux send "cd node_$num && LOG_LEVEL=Info COMPlus_PerfMapEnabled=1 ./Lachain.Console" ENTER
+        tmux send "cd node_$num && LOG_LEVEL=Trace ./Lachain.Console > allout.txt 2>&1" ENTER
         ((current_node++))
         if [ $current_node -gt $NODE_COUNT ]
         then
